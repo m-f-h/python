@@ -60,7 +60,7 @@ def isprimepower(n):
 def Jacobsthal(q):
     """Return Jacobsthal matrix of size q, J[i,j] = chi(i-j) with quadratic
     character of GF(q): chi(0) = 0, chi(x²) = 1 and chi(x) = -1 otherwise.
-    Here  x in GF(q): when q = p^k with k > 1, one cannot just take x in Z/qZ.
+    Here i-j is in GF(q): when q = p^k with k > 1, not the same as in Z/qZ!
     For q = 2^k, J = U - I, where  I = np.eye(q), U = np.ones(q,q).
     For odd q, J has zero row & column sums and  J * J.T = q.I + U."""
     if isprime(q):
@@ -84,19 +84,19 @@ def Hadamard(n):
 
     # odd or == 2 (mod 4) : impossible
     if n % 4:
-        raise ValueError("Can't make Hadamard matrix of this size.")
+        raise ValueError("There is no Hadamard matrix of this size.")
 
     # if n = q+1 where  q == 3 + 4k is a prime power
     if isprimepower(n-1):
         if getattr(Hadamard,'debug',0):
-            print(f"Using Jacobsthal matrix of size {n-1} (n = 3 mod 4).")
+            print(f"Using Jacobsthal matrix of size q = {n-1} == 3 (mod 4).")
         Q = Jacobsthal(n-1) + np.eye(n-1, dtype=int)
         return np.vstack([[1]*n, np.vstack([[-1]*(n-1), Q.T]).T])
     
     # if n = 2q+2 = 2(q+1) where q == 1 + 4k is a prime power
     if n % 8 == 4 and isprimepower(n//2-1): # n = 2q + 2
         if getattr(Hadamard,'debug',0):
-            print(f"Using Jacobsthal matrix of size {n//2-1} (n = 1 mod 4).")
+            print(f"Using Jacobsthal matrix of size q = {n//2-1} == 1 (mod 4).")
         Q = Jacobsthal(n//2-1)
         H = Hadamard(2); M = -H; D = np.matrix('1,-1;-1,-1')
         return np.block([[D if r==c else H if r==0 or c==0 or Q[r-1,c-1]>0
@@ -109,12 +109,12 @@ def Hadamard(n):
                          f"n = (prime power + 1) x 2^k, got n = {n}.")
 
 def check_Hadamard(n):
-    """Return 1 if there exists a Hadamard matrix of size n."""
+    """Return 1 if we can find a Hadamard matrix of size n."""
     if n < 3: return 1
     # odd or == 2 (mod 4) : impossible
     if n % 4: return 0
-    if isprimepower(n-1): return 1
-    if n % 8 == 4 and isprimepower(n//2-1): # n = 2q + 2
+    if isprimepower(n-1) or (
+            n % 8 == 4 and isprimepower(n//2-1)):
         return 1
     return check_Hadamard(n >> 1)
 
@@ -125,13 +125,13 @@ if __name__=='__main__1': # Hadamard test
         if (H*H.T - np.diag([n*4]*(n*4))).any():
             print("BAD for",n)
     # this gives BAD for n = 7, 13, 14, with "naive" implementation.
-    # NO BAD using galois
+    # no BAD using galois
     print("Done up to",n)
 
 if __name__=='__main__2': # Hadamard test 2
    for n in range(99):
   	 if not check_Hadamard(n*4): print(n,end=", ")
-   # output:
+   # output:  (=> n = 23*4 is first where we can't find H(n))
    # 23, 29, 39, 43, 46, 47, 58, 59, 65, 67, 73, 81, 89, 93, 94,
     
 if __name__=='__main__2': # Jacobsthal test
@@ -147,3 +147,4 @@ if __name__=='__main__2': # Jacobsthal test
     # this gives BAD for all even n > 0.
     print("Done up to",n)
 
+# eof
