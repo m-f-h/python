@@ -1,5 +1,9 @@
 """ persistent-data.py - May 2022 by M.F.Hasler
 
+In a nutshell, this is about how to store data that you have computed in Python 
+for use in subsequent sessions. (Obviously, by saving it to some storage medium
+in various possible formats, using various possible packages.)
+
 I recently wrote a blog post about using persistent data in Python.
 I compared
 - SQL databases : MySQL, PostgresQL, MariaDB, SQLite
