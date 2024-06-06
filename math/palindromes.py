@@ -35,7 +35,7 @@ def A002113(n):
   return int(s + s[-2 if n < M else -1::-1])
 """ or:
 A002113 = lambda n: int((s := str(n - (P if n < 11*(P := 10**int(log10(n/2))) else 10*P)))
-                        + s[-2 if n < 11*P: else -1::-1]) if n > 1 else 0
+                        + s[-2 if n < 11*P else -1::-1]) if n > 1 else 0
 """
 
 def palindromes(max_length = 99, start_length = 0):
