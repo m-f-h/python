@@ -27,13 +27,17 @@ Explanations:
   we get the relative index of the palindrome in its group (starting at 0).
   It is in the second half (even number of digits) iff n >= 1.1*10^G.
 '''
-
+from math import log10
 def A002113(n):
-  try: P = 10**floor(log(n//2,10)); M = 11*P
-  except ValueError: return 0
-  s = str(P + n - (2*P if n < M else M))
+  if n < 2: return 0
+  P = 10**int(log10(n//2)); M = 11*P  # or: floor(...), or: n/2
+  s = str(n - (P if n < M else M-P))
   return int(s + s[-2 if n < M else -1::-1])
-  
+""" or:
+A002113 = lambda n: int((s := str(n - (P if n < 11*(P := 10**int(log10(n/2))) else 10*P)))
+                        + s[-2 if n < 11*P: else -1::-1]) if n > 1 else 0
+"""
+
 def palindromes(max_length = 99, start_length = 0):
     """Generate all palindromes up to max_length, starting with start_length.
     (With start_length = 0 (resp. 1), start with 0 (resp. 1)."""
