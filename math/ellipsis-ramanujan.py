@@ -6,7 +6,7 @@
 References:
 https://fr.wikipedia.org/wiki/Ellipse_(math%C3%A9matiques)#Circonf%C3%A9rence
 https://docs.sympy.org/latest/modules/functions/special.html#sympy.functions.special.elliptic_integrals.elliptic_e
-
+https://www.linkedin.com/feed/update/urn:li:groupPost:1872005-7203814043063603200
     Recall:
     - area            A = 𝜋 𝑎 𝑏
     - circumference   C = 4 𝑎 E(e)
